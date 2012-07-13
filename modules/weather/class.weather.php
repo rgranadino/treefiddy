@@ -34,9 +34,13 @@ class weather implements module {
         switch($type){
             case "weatherbyname" :
                 return "http://api.wunderground.com/api/{$this->key}/geolookup/conditions/q/".$this->args[1]."/".$this->args[0].".json";
+		break;
             case "weatherbyzip" :
                 return "http://api.wunderground.com/api/{$this->key}/geolookup/conditions/q/{$this->args[0]}.json";
+		break;
             default:
+		return "http://api.wunderground.com/api/{$this->key}/geolookup/conditions/q/37075.json";
+		break;
         }
     }
 
