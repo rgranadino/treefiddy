@@ -1,9 +1,51 @@
 /**
- * $Id: CHANGELOG,v 1.4.2.4 2003/07/22 17:19:45 meebey Exp $
- * $Revision: 1.4.2.4 $
+ * $Id: CHANGELOG 189210 2005-06-25 16:55:46Z meebey $
+ * $Revision: 189210 $
  * $Author: meebey $
- * $Date: 2003/07/22 17:19:45 $
+ * $Date: 2005-06-26 02:25:46 +0930 (Sun, 26 Jun 2005) $
  */
+
+v1.1.0:
+------
+fixes:
+   
+changes:
+
+new:
+ - applied reconnect delay patch (sf.net patch #883820) from Ronald Hummelink <ronaldhummelink@users.sourceforge.net>
+   added setReconnectdelay() method, allows delay between reconnects. This reduces CPU load and prevents DoS.
+ - applied autoretry patch (sf.net patch #883821) from Ronald Hummelink <ronaldhummelink@users.sourceforge.net>
+   added setAutoRetryMax() method, makes connect retries cleaner.
+ - added send() method, can be used to send raw message to the IRC server.
+
+v0.5.6:
+------
+fixes:
+ - renamed Net_SmartIRC_base::Net_SmartIRC to
+   Net_SmartIRC_base::Net_SmartIRC_base
+   a PHP4 bug made it work, in PHP5 its fixed and doesn't
+   (closes PEAR bug #1466, sf.net patch #967067)
+ - fixed a bug in _rawreceive()
+   the parser checked if he found a colon (messagepart) but +1 was added, the
+   check never worked right (I found this bug while porting SmartIRC to C#)
+ - fixed bug in _gettype()
+   the regexs was too sloppy, sometimes it got confused, this can break easily
+   the ChannelSync code.
+ - fixed bug in _event_rpl_whoreply() 
+   on some IRC networks, the channel info in who replies can't be used, they
+   return sometimes random channels, this can break ChannelSync code.
+ - fixed include paths in example scripts (closes PEAR bug #2042)
+
+changes:
+ - applied load socket extension patch (sf.net patch #911993) from
+   Anatoly Techtonik <techtonik@users.sourceforge.net>
+   if the socket extension is not loaded, it will now try to load it for *nix
+   and windows.
+
+new:
+ - added objListenFor() method  
+   it works like listenFor() but returns an array of the received ircdata
+   objects (not just ircdata->message like listenFor() does)
 
 v0.5.5:
 -------
@@ -67,7 +109,7 @@ new:
  - added channel key syncing in _mode().
  - when an actionhandler message regex has a leading '/' then the regex is used as it is,
    this allows complex perl regex's.
- - added message type SMARTIRC_TYPE_CTCP_REQUEST and SMARTIRC_CTCTP_REPLY for more advanced CTCP.
+ - added message type SMARTIRC_TYPE_CTCP_REQUEST and SMARTIRC_CTCP_REPLY for more advanced CTCP.
  - added new log destinations SMARTIRC_NONE and SMARTIRC_BROWSEROUT
    (for firendly browserouput). When the script is called from a browser,
    the BROWSEROUT will automatic be used (closed sf.net bug #708155).

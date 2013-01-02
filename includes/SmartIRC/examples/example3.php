@@ -1,9 +1,9 @@
 <?php
 /**
- * $Id: example3.php,v 1.3 2003/01/16 22:30:09 meebey Exp $
- * $Revision: 1.3 $
- * $Author: meebey $
- * $Date: 2003/01/16 22:30:09 $
+ * $Id: example3.php 241083 2007-08-11 16:26:08Z amir $
+ * $Revision: 241083 $
+ * $Author: amir $
+ * $Date: 2007-08-12 01:56:08 +0930 (Sun, 12 Aug 2007) $
  *
  * Copyright (C) 2002-2003 Mirco "MEEBEY" Bauer <mail@meebey.net> <http://www.meebey.net>
  * 
@@ -25,7 +25,7 @@
  */
 // ---EXAMPLE OF HOW TO USE Net_SmartIRC---
 // this code shows how a mini php bot could be written
-include_once('../SmartIRC.php');
+include_once('Net/SmartIRC.php');
 
 class mybot
 {
@@ -34,6 +34,9 @@ class mybot
         $irc->message(SMARTIRC_TYPE_CHANNEL, '#smartirc-test', 'ops on this channel are:');
         
         $oplist = '';
+        // Here we're going to get the Channel Operators, the voices and users
+        // Method is available too, e.g. $irc->channel['#test']->users will
+        // Return the channel's users.
         foreach ($irc->channel['#test']->ops as $key => $value) {
             $oplist .= ' '.$key;
         }
@@ -47,7 +50,9 @@ $bot = &new mybot();
 $irc = &new Net_SmartIRC();
 $irc->setDebug(SMARTIRC_DEBUG_ALL);
 $irc->setUseSockets(TRUE);
-$irc->setChannelSynching(TRUE);
+// Using Channel Syncing we will track all users on all channels we are joined
+// (Note. Use setChannelSyncing instead of setChannelSynching)
+$irc->setChannelSyncing(TRUE);
 $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!ops', $bot, 'op_list');
 $irc->connect('irc.freenet.de', 6667);
 $irc->login('Net_SmartIRC', 'Net_SmartIRC Client '.SMARTIRC_VERSION.' (example3.php)', 8, 'Net_SmartIRC');

@@ -1,2 +1,3 @@
 #!/bin/sh
-nohup php -f irc.php&
+#nohup php -f irc.php&
+nohup php -f bot.php&

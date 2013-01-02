@@ -1,9 +1,9 @@
 <?php
 /**
- * $Id: example5.php,v 1.2 2003/01/16 22:39:54 meebey Exp $
- * $Revision: 1.2 $
+ * $Id: example5.php 175138 2004-12-20 15:44:35Z meebey $
+ * $Revision: 175138 $
  * $Author: meebey $
- * $Date: 2003/01/16 22:39:54 $
+ * $Date: 2004-12-21 02:14:35 +1030 (Tue, 21 Dec 2004) $
  *
  * Copyright (C) 2002-2003 Mirco "MEEBEY" Bauer <mail@meebey.net> <http://www.meebey.net>
  * 
@@ -25,7 +25,7 @@
  */
 // ---EXAMPLE OF HOW TO USE Net_SmartIRC---
 // this code shows how a mini php bot could be written
-include_once('../SmartIRC.php');
+include_once('Net/SmartIRC.php');
 
 class mybot
 {
