@@ -113,4 +113,13 @@ class Irc {
     {
         $this->_irc->message(SMARTIRC_TYPE_CHANNEL, $channel, $message);
     }
+    /**
+     * send private message
+     * @param str $nick
+     * @param str $message
+     */
+    public function sendPrivateMessage($nick, $message)
+    {
+        $this->_irc->message(SMARTIRC_TYPE_QUERY, $nick, $message);
+    }
 }

@@ -4,10 +4,7 @@
  * treefiddy insult module
  * @author Rolando Granadino <beeplogic@gmail.com>
  */
-/**
- * insult module
- * @author Rolando Granadino <beeplogic@gmail.com>
- */
+
 use Geekpunks\Common\Model;
 use Geekpunks\Treefiddy\Irc_ChannelEvent;
 use Geekpunks\Treefiddy\Irc;
