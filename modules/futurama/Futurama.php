@@ -21,10 +21,8 @@ class Futurama implements ModuleInterface {
      */
     protected $_quotesFile = '';
     /**
-     * futurama module constructor
-     * registers the action handler for SmartIRC
-     * @param Net_SmartIRC $irc
-     * @param modules $modules
+     * futurama module constructor 
+     * @param Bot $bot
      */
     public function __construct(Bot $bot)
     {
@@ -34,8 +32,7 @@ class Futurama implements ModuleInterface {
     /**
      * sends quote to channel
      * @todo store in memory?
-     * @param Net_SmartIRC $irc
-     * @param Net_SmartIRC_data $data
+     * @param Model $eventData
      */
     public function chanHandler(Model $eventData) 
     {
