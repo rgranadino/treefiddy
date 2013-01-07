@@ -91,7 +91,7 @@ class Irc {
      */
     public function channelHandler(\Net_SmartIRC $irc, \Net_SmartIRC_data $data)
     {
-        $dataModel = new Model();
+        $dataModel = new Irc_ChannelEvent($this);
         $msgData   = array(
                 'from'    => $data->from,
                 'nick'    => $data->nick,
@@ -100,9 +100,17 @@ class Irc {
                 'channel' => $data->channel,
                 'message' => $data->message,
                 'raw'     => $data->rawmessage,
-                'irc'     => $this
         );
         $dataModel->addData($msgData);
         $this->_bot->dispatchEvent(self::EVENT_CHAN_MSG, $dataModel);
+    }
+    /**
+     * send channel message
+     * @param str $channel
+     * @param str $message
+     */
+    public function sendChannelMessage($channel, $message)
+    {
+        $this->_irc->message(SMARTIRC_TYPE_CHANNEL, $channel, $message);
     }
 }

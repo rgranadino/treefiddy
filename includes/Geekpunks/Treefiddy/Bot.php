@@ -49,7 +49,7 @@ class Bot {
         $this->_config  = new Config($botDir.'/config.ini');
         $this->_irc     = new Irc($this);
         $this->_events  = new Events($this);
-        $this->_modules = new Modules($botDir.'/modules', $this); 
+        $this->_modules = new Modules($this->getModulesDir(), $this); 
     }
     /**
      * register a bot event
@@ -85,7 +85,14 @@ class Bot {
     {
         return $this->_botDir;
     }
-    
+    /**
+     * get modules directory
+     * @return string
+     */
+    public function getModulesDir()
+    {
+        return $this->getBotDir().'/modules';
+    }
     /**
      * @return Config
      */
