@@ -4,10 +4,9 @@
  * treefiddy futurama quotes module
  * @author Evan Brown <evan@bcin.net>
  */
-use Geekpunks\Treefiddy\Irc_ChannelEvent;
 
 use Geekpunks\Common\Model;
-
+use Geekpunks\Treefiddy\Irc_ChannelEvent;
 use Geekpunks\Treefiddy\Irc;
 use Geekpunks\Treefiddy\Bot;
 use Geekpunks\Treefiddy\ModuleInterface;
@@ -40,7 +39,7 @@ class Futurama implements ModuleInterface {
      */
     public function chanHandler(Model $eventData) 
     {
-        if ($eventData instanceof Irc_ChannelEvent){
+        if ($eventData instanceof Irc_ChannelEvent) {
             $message = $eventData->getMessage();
             if (preg_match('/^!futurama/', $message) != 1) {
                 return;
