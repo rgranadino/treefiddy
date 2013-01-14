@@ -5,7 +5,6 @@
  * @todo remove coupling with Bot class, replace with setters? - this would be an overall approach
  */
 namespace Geekpunks\Treefiddy;
-use Geekpunks\Common\Model as Model;
 /**
  * Irc wrapper model
  * abstracts our IRC components away
@@ -16,6 +15,7 @@ class Irc {
      * event constants
      */
     const EVENT_CHAN_MSG = 'irc_chan_msg';
+    const EVENT_PRIV_MSG = 'irc_priv_msg';
     /**
      * 
      * @var \Net_SmartIRC
@@ -36,8 +36,9 @@ class Irc {
         require_once $bot->getBotDir().'/includes/SmartIRC/SmartIRC.php';
         $this->_bot = $bot;
         $this->_irc = new \Net_SmartIRC();
-        $this->_irc->setDebug(SMARTIRC_DEBUG_ACTIONHANDLER);
+        $this->_irc->setDebug(SMARTIRC_DEBUG_ALL);//SMARTIRC_DEBUG_ACTIONHANDLER
         $this->_irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '.*', $this, 'channelHandler');
+        $this->_irc->registerActionhandler(SMARTIRC_TYPE_QUERY, '.*', $this, 'msgHandler');
     }
     /**
      * connect to IRC server
@@ -84,8 +85,15 @@ class Irc {
         $this->_irc->disconnect();
     }
     /**
+     * get bot instance
+     * @return Bot
+     */
+    public function getBot()
+    {
+        return $this->_bot;
+    }
+    /**
      * Channel message handler, dispatches bot event
-     * @todo implement IRCEventData to allow for easier handlers? would reduce checks for if $model->getData('irc') and can support getters
      * @param \Net_SmartIRC $irc
      * @param \Net_SmartIRC_data $data
      */
@@ -105,6 +113,25 @@ class Irc {
         $this->_bot->dispatchEvent(self::EVENT_CHAN_MSG, $dataModel);
     }
     /**
+     * private message handler, dispatches bot event
+     * @param \Net_SmartIRC $irc
+     * @param \Net_SmartIRC_data $data
+     */
+    public function msgHandler(\Net_SmartIRC $irc, \Net_SmartIRC_data $data)
+    {
+        $dataModel = new Irc_MessageEvent($this);
+        $msgData   = array(
+                'from'    => $data->from,
+                'nick'    => $data->nick,
+                'ident'   => $data->ident,
+                'host'    => $data->host,
+                'message' => $data->message,
+                'raw'     => $data->rawmessage,
+        );
+        $dataModel->addData($msgData);
+        $this->_bot->dispatchEvent(self::EVENT_PRIV_MSG, $dataModel);
+    }
+    /**
      * send channel message
      * @param str $channel
      * @param str $message
@@ -121,5 +148,65 @@ class Irc {
     public function sendPrivateMessage($nick, $message)
     {
         $this->_irc->message(SMARTIRC_TYPE_QUERY, $nick, $message);
+    }
+    /**
+     * join IRC channel
+     * @param str $name
+     */
+    public function joinChannel($channels)
+    {
+        if (!is_array($channels)) {
+            $channels = array($channels);
+        } 
+        $this->_irc->join($channels);
+    }
+    /**
+     * part channel
+     * @param str $channels
+     * @param str $reason
+     */
+    public function partChannel($channels, $reason = null)
+    {
+        if (!is_array($channels)) {
+            $channels = array($channels);
+        }
+        $this->_irc->part($channels, $reason);
+    }
+    /**
+     * give $nick ops on a given $channel
+     * @param str $channel
+     * @param str $nick
+     */
+    public function op($channel, $nick)
+    {
+        $this->_irc->op($channel,$nick);
+    }
+    /**
+     * remove op from $nick on a given $channel
+     * @param str $channel
+     * @param str $nick
+     */
+    public function deOp($channel, $nick)
+    {
+        $this->_irc->deop($channel, $nick);
+    }
+    /**
+     * set a $mode on a given $target (chan or nick)
+     * @param str $target
+     * @param str $mode
+     */
+    public function setMode($target, $mode)
+    {
+        $this->_irc->mode($target, $mode);
+    }
+    /**
+     * kick $nicks from $channel
+     * @param str $channel
+     * @param str|array $nicks
+     * @param str $reason
+     */
+    public function kick($channel, $nicks, $reason = null)
+    {
+        $this->_irc->kick($channel, $nicks, $reason);
     }
 }
