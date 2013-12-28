@@ -17,7 +17,7 @@ mode = 8
 sockets = true
 
 [admin]
-nicks = admin
+nicks[0] = beeplogic
 password = password
 
 [weather]
