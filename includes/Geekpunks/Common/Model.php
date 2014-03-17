@@ -14,7 +14,7 @@ class Model {
      * data array
      * @var array
      */
-    protected $_data = array();
+    protected $data = array();
     
     /**
      * get data for a given $key
@@ -22,8 +22,8 @@ class Model {
      */
     public function getData($key)
     {
-        if (isset($this->_data[$key])) {
-            return $this->_data[$key];
+        if (isset($this->data[$key])) {
+            return $this->data[$key];
         }
         return null;
     }
@@ -47,7 +47,7 @@ class Model {
      */
     public function setData($key, $value)
     {
-        $this->_data[$key] = $value;
+        $this->data[$key] = $value;
         return $this;
     }
 }

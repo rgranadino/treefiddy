@@ -14,13 +14,13 @@ class Config {
      * file path location
      * @var str
      */
-    protected $_filePath = null;
+    protected $filePath = null;
     
     /**
      * config array
      * @var array
      */
-    protected $_config   = null;
+    protected $config   = null;
     
     /**
      * constructor
@@ -28,7 +28,7 @@ class Config {
      */
     public function __construct($filePath)
     {
-        $this->_filePath = $filePath;
+        $this->filePath = $filePath;
         $this->_loadConfig();
     }
 
@@ -38,7 +38,7 @@ class Config {
      */
     protected function _loadConfig()
     {
-        $configPath = $this->_filePath;
+        $configPath = $this->filePath;
         if (!is_readable($configPath)) {
             throw new Exception("Cannot read config file: {$configPath}");
         }
@@ -46,7 +46,7 @@ class Config {
         if ($config === false) {
             throw new Exception("Failed to parse ini file: {$configPath}");
         }
-        $this->_config = $config;
+        $this->config = $config;
     }
     /**
      * validate config against an array of sections and keys
@@ -60,11 +60,11 @@ class Config {
      */
     protected function _validateConfig(array $requiredConfig)
     {
-        $config = $this->_config;
+        $config = $this->config;
         foreach ($requiredConfig as $sectionKey => $configSection) {
             foreach ($configSection as $configKey) {
                 if (!isset($config[$sectionKey][$configKey])) {
-                    throw new Exception("Missing Config value: [{$sectionKey}][$configKey]");
+                    throw new Exception("Missing Config value: [{$sectionKey}][{$configKey}]");
                 }
             }
         }
@@ -79,8 +79,8 @@ class Config {
     public function getConfigValue($section, $key)
     {
         $return = null;
-        if (isset($this->_config[$section]) && isset($this->_config[$section][$key])) {
-            return $this->_config[$section][$key];
+        if (isset($this->config[$section]) && isset($this->config[$section][$key])) {
+            return $this->config[$section][$key];
         }
         return $return;
     }
