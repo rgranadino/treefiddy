@@ -22,7 +22,7 @@ class Events {
      * @param str $type
      * @param array $callback
      */
-    public function register($type, array $callback)
+    public function register($type, callable $callback)
     {
         if (!isset($this->_observers[$type])) {
             $this->_observers[$type] = array();
