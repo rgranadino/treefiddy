@@ -15,4 +15,9 @@ class ModelTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('foo', $model->getData('test'));
         $this->assertEquals('bar', $model->getData('testing'));
     }
+    public function testNullData()
+    {
+        $model = new Model();
+        $this->assertNull($model->getData('test'));
+    }
 }

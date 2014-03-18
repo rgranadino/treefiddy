@@ -21,7 +21,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
     /**
      * @expectedException Geekpunks\Common\Exception
      */
-    public function testValidateConfig()
+    public function testInvalidConfig()
     {
         $class = new ReflectionClass('Geekpunks\Common\Config');
         $method = $class->getMethod('_validateConfig');
@@ -29,9 +29,23 @@ class ConfigTest extends PHPUnit_Framework_TestCase
         $obj = new Config('tests/Common/required.ini');
         $method->invokeArgs($obj, array( array('this'=> array('is', 'required'))));
     }
+    public function testValidateConfig()
+    {
+        $class = new ReflectionClass('Geekpunks\Common\Config');
+        $method = $class->getMethod('_validateConfig');
+        $method->setAccessible(true);
+        $obj = new Config('tests/Common/required.ini');
+        $method->invokeArgs($obj, array( array('this'=> array('is'))));
+        $this->assertEquals('foo', $obj->getConfigValue('this', 'is'));
+    }
     public function testConfigValue()
     {
         $obj = new Config('tests/Common/required.ini');
         $this->assertEquals('foo', $obj->getConfigValue('this', 'is'));
+    }
+    public function testNullValue()
+    {
+        $obj = new Config('tests/Common/required.ini');
+        $this->assertNull($obj->getConfigValue('this', 'doesnt_exist'));
     }
 }
